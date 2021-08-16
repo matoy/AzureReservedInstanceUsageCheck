@@ -73,7 +73,7 @@ It might need a couple of minutes before it works because the function has to in
 ## Monitoring integration  
 From there, you just have to call your function's URL from your monitoring system.  
   
-You can find a script example in monitoring-script-example folder which makes a GET request, outputs the result and looks for "CRITICAL" or "WARNING" in the text and use the right exit code accordingly.  
+You can find a script example in 'monitoring-script-example' folder which makes a GET request, outputs the result, looks for "CRITICAL" or "WARNING" in the text and use the right exit code accordingly.  
   
 Calling the function once a day should be enough since information given by the Azure API are on a daily basis.  
   

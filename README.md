@@ -66,7 +66,7 @@ The signature output will act a reminder since you'll get it in the results to y
   
 When deployment is done, you can get your Azure function's URL in the output variables.  
 Trigger it manually in your favorite browser and eventually look at the logs in the function.  
-It might need a couple of minutes before it works because the function has to install Az module the first time it is executed. Re-execute it again if necessary.  
+After you execute it for the first time, it might need 5-10 of minutes before it works because the function has to install Az module. Re-execute it again if necessary.  
 </br>
 </br>
 

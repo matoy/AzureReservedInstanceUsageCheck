@@ -2,10 +2,15 @@
   
 ## Why this function app ?
 Just figure this real life scenario: you manage many Azure resources and because you care about spendings, you use many "reserved instances".  
+  
 You manage to optimize has much as possible their usage but you can't be looking everyday on Azure RI's dashboard and you can't know everything being done in OPS (like VM resizing change or app decommissionning).  
+  
 Azure currently doesn't offer any effecient solution to address this day-to-day need.  
+  
 This function app automatically gathers and outputs usage for 'Reservations' it is allowed to by calling Azure API.  
+  
 Coupled with a common monitoring system (nagios, centreon, zabbix, or whatever you use), you'll will automatically get alerted as soon as reservation usage drops below desired threshold.  
+</br>
 </br>
 
 ## Requirements
@@ -63,13 +68,19 @@ When deployment is done, you can get your Azure function's URL in the output var
 Trigger manually and in your favorite browser look and eventually at the logs in the function.  
 It might need a couple of minutes before it works because the function has to install Az module the first time  
 </br>
+</br>
 
 ## Monitoring integration  
 From there, you just have to call your function's URL from your monitoring system.  
+  
 You can find a script example in monitoring-script-example folder which makes a GET request, outputs the result and looks for "CRITICAL" or "WARNING" in the text and use the right exit code accordingly.  
+  
 Calling the function pnce a day should be enough since information given by the Azure API are in a daily basis.  
+  
 You can modify reservation usage 'warning' and 'critical' thresholds within the get paramaters of the URL (just add &warning=90&critical=80 for example).  
+  
 Default values are 99 and 98.  
   
 This is an example of what i get in Centreon:  
 ![alt text](https://github.com/matoy/AzureReservedInstanceUsageCheck/blob/main/img/screenshot2.png?raw=true)  
+  

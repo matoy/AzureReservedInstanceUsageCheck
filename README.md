@@ -30,7 +30,7 @@ Basically, that would be something like:
 
 ## Installation
 Once you have all the requirements, you can deploy the Azure function with de "Deploy" button below:  
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fgithub.com%2Fmatoy%2FAzureReservedInstanceUsageCheck%2Fraw%2Fmain%2Farm-template%2FAzureReservedInstanceUsageCheck.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmatoy%2FAzureReservedInstanceUsageCheck%2Fmain%2Farm-template%2FAzureReservedInstanceUsageCheck.json)
   
 This will deploy an Azure app function with its storage account and app insights objects and a 'consumption' app plan.  
 A keyvault will also be deployed to securely store the secret of your app principal.  
@@ -59,7 +59,7 @@ For more serious use, I would advise you host your own release so that you would
 Max Concurrent Jobs:  
 An API call to Azure will have to be made for each reservation order.  
 If you have many reservation orders, you might get an http timeout when calling the function from your monitoring system.  
-This value allow to make <value> calls to Azure API in parallel.  
+This value allows to make <value> calls to Azure API in parallel.  
 With the default value, it will take around 40 seconds for  ~100 reservations.  
   
 Signature:  

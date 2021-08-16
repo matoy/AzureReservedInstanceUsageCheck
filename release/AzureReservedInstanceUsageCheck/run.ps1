@@ -131,13 +131,13 @@ Write-Host $out
 $signature = $env:Signature
 $body = $out + "`n$signature`n"
 if ($criticalCount -ne 0) {
-    $body = "Status CRITICAL - Alert on $criticalCount reserved instance(s) usage`n" + $body
+    $body = "Status CRITICAL - Usage alert on $criticalCount reserved instance(s)`n" + $body
 }
 elseif ($warningCount -ne 0) {
-    $body = "Status WARNING - Alert on $warningCount reserved instance(s) usage`n" + $body
+    $body = "Status WARNING - Usage alert on $warningCount reserved instance(s)`n" + $body
 }
 else {
-    $body = "Status OK - No alert on $($reservationOrdersSucceeded.count) reserved instance(s) usage`n" + $body
+    $body = "Status OK - No usage alert on any $($reservationOrdersSucceeded.count) reserved instance(s)`n" + $body
 }
 
 # Associate values to output bindings by calling 'Push-OutputBinding'.

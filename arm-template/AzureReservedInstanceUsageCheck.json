@@ -4,31 +4,12 @@
   "parameters": {
     "appName": {
       "type": "string",
-      "defaultValue": "[concat('fnapp-', substring(uniqueString(resourceGroup().id),0,6))]",
+      "defaultValue": "[concat('ri-usage-check-', substring(uniqueString(resourceGroup().id),0,6))]",
       "metadata": {
         "description": "The name of the function app that you wish to create."
       }
     },
-    "storageAccountType": {
-      "type": "string",
-      "defaultValue": "Standard_LRS",
-      "allowedValues": [
-        "Standard_LRS",
-        "Standard_GRS",
-        "Standard_RAGRS"
-      ],
-      "metadata": {
-        "description": "Storage Account type"
-      }
-    },
-    "location": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Location for all resources."
-      }
-    },
-    "TenantId": {
+    "TenantID": {
       "type": "string",
       "defaultValue": "[subscription().tenantId]",
       "metadata": {
@@ -48,13 +29,6 @@
       "metadata": {
         "description": "App principal secret"
       }
-    },
-	"vaultName": {
-      "type": "string",
-      "defaultValue": "[concat('kv-', substring(uniqueString(resourceGroup().id),0,6))]",
-      "metadata": {
-        "description": "Keyvault name"
-	  }
     },
 	"zipReleaseURL": {
       "type": "string",
@@ -79,10 +53,12 @@
     }
 },
   "variables": {
-	"TenantId": "[parameters('TenantId')]",
+    "location": "[resourceGroup().location]",
+	"storageAccountType": "Standard_LRS",
+	"TenantID": "[parameters('TenantID')]",
 	"ReservationOrdersReaderApplicationID": "[parameters('ReservationOrdersReaderApplicationID')]",
 	"ReservationOrdersReaderSecret": "[parameters('ReservationOrdersReaderSecret')]",
-    "keyvaultAppName": "[parameters('vaultName')]",
+    "keyvaultAppName": "[concat('kv-', parameters('appName'))]",
 	"functionAppName": "[parameters('appName')]",
     "hostingPlanName": "[parameters('appName')]",
     "applicationInsightsName": "[parameters('appName')]",
@@ -95,9 +71,9 @@
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2019-06-01",
       "name": "[variables('storageAccountName')]",
-      "location": "[parameters('location')]",
+      "location": "[variables('location')]",
       "sku": {
-        "name": "[parameters('storageAccountType')]"
+        "name": "[variables('storageAccountType')]"
       },
       "kind": "Storage"
     },
@@ -105,7 +81,7 @@
 		"name": "[variables('keyvaultAppName')]",
 		"type": "Microsoft.KeyVault/vaults",
 		"apiVersion": "2019-09-01",
-		"location": "[parameters('location')]",
+		"location": "[variables('location')]",
 		"properties": {
 			"tenantId": "[subscription().tenantId]",
 			"sku": {
@@ -131,7 +107,7 @@
 		"type": "Microsoft.KeyVault/vaults/secrets",
 		"apiVersion": "2021-04-01-preview",
 		"name": "[concat(variables('keyvaultAppName'), '/ReservationOrdersReaderSecret')]",
-		"location": "[parameters('location')]",
+		"location": "[variables('location')]",
 		"dependsOn": [
 			"[resourceId('Microsoft.KeyVault/vaults', variables('keyvaultAppName'))]"
 		],
@@ -143,7 +119,7 @@
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2020-06-01",
       "name": "[variables('hostingPlanName')]",
-      "location": "[parameters('location')]",
+      "location": "[variables('location')]",
       "sku": {
         "name": "Y1",
         "tier": "Dynamic"
@@ -157,7 +133,7 @@
       "type": "Microsoft.Web/sites",
       "apiVersion": "2020-06-01",
       "name": "[variables('functionAppName')]",
-      "location": "[parameters('location')]",
+      "location": "[variables('location')]",
 	  "identity": {
         "type": "SystemAssigned"
       },
@@ -200,7 +176,7 @@
             },
 			{
               "name": "TenantId",
-              "value": "[variables('TenantId')]"
+              "value": "[variables('TenantID')]"
             },
 			{
               "name": "ReservationOrdersReaderApplicationID",
@@ -230,7 +206,7 @@
 		"type": "Microsoft.Web/sites/config",
 		"apiVersion": "2021-01-15",
 		"name": "[concat(variables('functionAppName'), '/web')]",
-		"location": "[parameters('location')]",
+		"location": "[variables('location')]",
 		"dependsOn": [
 			"[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
 		],
@@ -242,7 +218,7 @@
       "type": "microsoft.insights/components",
       "apiVersion": "2020-02-02-preview",
       "name": "[variables('applicationInsightsName')]",
-      "location": "[parameters('location')]",
+      "location": "[variables('location')]",
       "tags": {
         "[concat('hidden-link:', resourceId('Microsoft.Web/sites', variables('applicationInsightsName')))]": "Resource"
       },

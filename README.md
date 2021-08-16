@@ -30,7 +30,7 @@ Basically, that would be something like:
 
 ## Installation
 Once you have all the requirements, you can deploy the Azure function with de "Deploy" button below:  
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://github.com/matoy/AzureReservedInstanceUsageCheck/raw/main/arm-template/AzureReservedInstanceUsageCheck.json)  
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fgithub.com%2Fmatoy%2FAzureReservedInstanceUsageCheck%2Fraw%2Fmain%2Farm-template%2FAzureReservedInstanceUsageCheck.json)
   
 This will deploy an Azure app function with its storage account and app insights objects and a 'consumption' app plan.  
 A keyvault will also be deployed to securely store the secret of your app principal.  

@@ -3,7 +3,7 @@
 ## Why this function app ?
 Just figure out this real life scenario: you manage many Azure resources and because you care about spendings, you use many "reserved instances".  
   
-You manage to optimize has much as possible their usage but you can't be looking everyday on Azure RI's dashboard and you can't know everything that's being done by all OPS teams (like VM resizing change or app decommissionning).  
+You manage to optimize has much as possible their usage but you can't be looking everyday on Azure RI's dashboard and you can't know everything what's being done by all OPS teams (like VM resizing change or app decommissionning).  
   
 Azure currently doesn't offer any effecient solution to address this day-to-day need.  
   

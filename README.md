@@ -1,20 +1,12 @@
 # AzureReservedInstanceUsageCheck
-
-<!-- SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Stars][stars-shield]][stars-url]
-[![Forks][forks-shield]][forks-url]
-[![Issues][issues-shield]][issues-url]
-
-
+  
 ## Why this function app ?
 Just figure this real life scenario: you manage many Azure resources and because you care about spendings, you use many "reserved instances".  
 You manage to optimize has much as possible their usage but you can't be looking everyday on Azure RI's dashboard and you can't know everything being done in OPS (like VM resizing change or app decommissionning).  
 Azure currently doesn't offer any effecient solution to address this day-to-day need.  
 This function app automatically gathers and outputs usage for 'Reservations' it is allowed to by calling Azure API.  
 Coupled with a common monitoring system (nagios, centreon, zabbix, or whatever you use), you'll will automatically get alerted as soon as reservation usage drops below desired threshold.  
-  
-
+</br>
 ## Requirements
 An "app registration" account (client id, valid secret and tenant id).  
 Reader RBAC role for this account on all reservation orders you want to monitor.  

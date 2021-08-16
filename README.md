@@ -60,6 +60,7 @@ Max Concurrent Jobs:
 An API call to Azure will have to be made for each reservation order.  
 If you have many reservation orders, you might get an http timeout when calling the function from your monitoring system.  
 This value allow to make <value> calls to Azure API in parallel.  
+With the default value, it will take around 40 seconds for  ~100 reservations.  
   
 Signature:  
 When this function will be called by your monitoring system, you likely would forget about it.  

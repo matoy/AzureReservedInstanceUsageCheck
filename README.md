@@ -19,7 +19,7 @@ Basically, that would be something like:
       New-AzRoleAssignment -ObjectId $appPrincipal.id -RoleDefinitionName "Reader" -Scope $order.id  
     }  
   
-
+</br>
 ## Installation
 Once you have all the requirements, you can deploy the Azure function with de "Deploy" button below:  
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmatoy%2FAzureReservedInstanceUsageCheck%2Fmain%2Farm-template%2FAzureReservedInstanceUsageCheck.json)
@@ -62,7 +62,7 @@ When deployment is done, you can get your Azure function's URL in the output var
 Trigger manually and in your favorite browser look and eventually at the logs in the function.  
 It might need a couple of minutes before it works because the function has to install Az module the first time  
   
-  
+</br>
 ## Monitoring integration  
 From there, you just have to call your function's URL from your monitoring system.  
 You can find a script example in monitoring-script-example folder which makes a GET request, outputs the result and looks for "CRITICAL" or "WARNING" in the text and use the right exit code accordingly.  

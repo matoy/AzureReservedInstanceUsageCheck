@@ -20,6 +20,7 @@ An "app registration" account (client id, valid secret and tenant id).
 Reader RBAC role for this account on all reservation orders you want to monitor.  
 You can find powershell cmdlets in 'set-permissions-example' folder ; reservation orders owner can execute them in a simple Azure cloudshell.  
 Basically, that would be something like:  
+
     $orders = Get-AzureRmReservationOrder  
     $appPrincipal = Get-AzADServicePrincipal -DisplayName "my-app-account-name"  
     foreach ($order in $orders) {  

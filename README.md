@@ -65,8 +65,8 @@ When this function will be called by your monitoring system, you likely might fo
 The signature output will act a reminder since you'll get it in the results to your monitoring system.  
   
 When deployment is done, you can get your Azure function's URL in the output variables.  
-Trigger manually in your favorite browser and eventually look at the logs in the function.  
-It might need a couple of minutes before it works because the function has to install Az module the first time  
+Trigger it manually in your favorite browser and eventually look at the logs in the function.  
+It might need a couple of minutes before it works because the function has to install Az module the first time it is executed. Re-execute it again if necessary.  
 </br>
 </br>
 

@@ -1,15 +1,3 @@
-
-TO DO:
-2/ écrire le readme
-3/ bouton deploy et visualize: https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.web/web-app-github-deploy
-3/ commit sur github
-4/ refaire un test de bout en bout
-4/ article sur medium
-
-doc:
-préciser que la première exécution est longue car la function install les modules az
-et peut provoquer des erreurs 
-
 # AzureReservedInstanceUsageCheck
 
 <!-- SHIELDS -->

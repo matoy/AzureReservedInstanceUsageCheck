@@ -20,7 +20,7 @@ You can find powershell cmdlets in 'set-permissions-example' folder ; reservatio
 Basically, that would be something like:  
 </br>
 
-    $orders = Get-AzureRmReservationOrder  
+    $orders = Get-AzReservationOrder  
     $appPrincipal = Get-AzADServicePrincipal -DisplayName "my-app-account-name"  
     foreach ($order in $orders) {  
       New-AzRoleAssignment -ObjectId $appPrincipal.id -RoleDefinitionName "Reader" -Scope $order.id  

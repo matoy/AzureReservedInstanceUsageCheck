@@ -3,6 +3,8 @@
 # orders in one shot.
 # Owner role on reservation order is required for this to work
 # When you have new batches of reservation orders, you can execute it again.
+# Reservation order is not to be confused with reservation; a reservation order
+# is an Azure container for reservations.  
 
 $orders = Get-AzReservationOrder
 # filter here for a better target and uncomment

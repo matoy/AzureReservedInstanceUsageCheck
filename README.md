@@ -30,7 +30,7 @@ Basically, that would be something like:
 ## Installation
 Once you have all the requirements, you can deploy the Azure function with de "Deploy" button below:  
   
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmatoy%2FAzureReservedInstanceUsageCheck%2Fmain%2Farm-template%2FAzureReservedInstanceUsageCheck.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmatoy%2FAzureReservedInstanceUsageCheck%2Fmain%2Farm-template%2FAzureReservedInstanceUsageCheck.json) [![alt text](http://armviz.io/visualizebutton.png)](http://armviz.io/#/?load=https://raw.githubusercontent.com/matoy/AzureReservedInstanceUsageCheck/main/arm-template/AzureReservedInstanceUsageCheck.json)  
   
 </br>
 This will deploy an Azure app function with its storage account, app insights and 'consumption' app plan.  

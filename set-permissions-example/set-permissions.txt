@@ -4,9 +4,9 @@
 # Owner role on reservation order is required for this to work
 # When you have new batches of reservation orders, you can execute it again.
 
-$orders = Get-AzureRmReservationOrder
+$orders = Get-AzReservationOrder
 # filter here for a better target and uncomment
-#$orders = Get-AzureRmReservationOrder | where {$_.DisplayName -like "VM_RI_*08-2021*" -and $_.ProvisioningState -eq "Succeeded"}
+#$orders = Get-AzReservationOrder | where {$_.DisplayName -like "VM_RI_*08-2021*" -and $_.ProvisioningState -eq "Succeeded"}
 
 # put the name of your app principal here
 $appPrincipalName = "my-app-account-name"

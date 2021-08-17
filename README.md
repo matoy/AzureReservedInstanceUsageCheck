@@ -7,7 +7,7 @@ You manage to optimize has much as possible their usage but you can't be looking
   
 Azure currently doesn't offer any effecient solution to address this day-to-day need.  
   
-This function app automatically gathers and outputs usage for 'Reservations' it is allowed to by calling Azure API.  
+This function app automatically gathers and outputs usage for "Reservations" it is allowed to by calling Azure API.  
   
 Coupled with a common monitoring system (nagios, centreon, zabbix, or whatever you use), you'll automatically get alerted as soon as reservation usage drops below desired threshold.  
 </br>
@@ -15,8 +15,8 @@ Coupled with a common monitoring system (nagios, centreon, zabbix, or whatever y
 
 ## Requirements
 * An "app registration" account (client id, valid secret and tenant id).  
-* Reader RBAC role for this account on all reservation orders you want to monitor.  
-You can find powershell cmdlets in 'set-permissions-example' folder ; reservation orders owner can execute them in a simple Azure cloudshell.  
+* Reader RBAC role for this account on all reservation orders you want to monitor ("reservation order" is not to be confused with "reservation"; a "reservation order" is an Azure container for "reservations").  
+You can find powershell cmdlets in "set-permissions-example" folder ; reservation orders owner can execute them in a simple Azure cloudshell.  
 Basically, that would be something like:  
 </br>
 
@@ -33,7 +33,7 @@ Once you have all the requirements, you can deploy the Azure function with de "D
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmatoy%2FAzureReservedInstanceUsageCheck%2Fmain%2Farm-template%2FAzureReservedInstanceUsageCheck.json) [![alt text](http://armviz.io/visualizebutton.png)](http://armviz.io/#/?load=https://raw.githubusercontent.com/matoy/AzureReservedInstanceUsageCheck/main/arm-template/AzureReservedInstanceUsageCheck.json)  
   
 </br>
-This will deploy an Azure app function with its storage account, app insights and 'consumption' app plan.  
+This will deploy an Azure app function with its storage account, app insights and "consumption" app plan.  
 A keyvault will also be deployed to securely store the secret of your app principal.  
   
 ![alt text](https://github.com/matoy/AzureReservedInstanceUsageCheck/blob/main/img/screenshot1.png?raw=true)  
@@ -69,18 +69,18 @@ The signature output will act a reminder since you'll get it in the results to y
   
 When deployment is done, you can get your Azure function's URL in the output variables.  
 Trigger it manually in your favorite browser and eventually look at the logs in the function.  
-After you execute the function for the first time, it might need 5-10 minutes before it works because it has to install Az module. Re-execute it again if necessary and be patient, it will work.  
+After you execute the function for the first time, it might (will) need 5-10 minutes before it works because it has to install Az module. You even might get an HTTP 500 error. Give the function some time to initialize, re-execute it again if necessary and be patient, it will work.  
 </br>
 </br>
 
 ## Monitoring integration  
 From there, you just have to call your function's URL from your monitoring system.  
   
-You can find a script example in 'monitoring-script-example' folder which makes a GET request, outputs the result, looks for "CRITICAL" or "WARNING" in the text and use the right exit code accordingly.  
+You can find a script example in "monitoring-script-example" folder which makes a GET request, outputs the result, looks for "CRITICAL" or "WARNING" in the text and use the right exit code accordingly.  
   
 Calling the function once a day should be enough since data provided by the Azure API is usage rate on a daily basis.  
   
-You can modify reservation usage 'warning' and 'critical' thresholds within the GET parameters of the URL (just add &warning=90&critical=80 for example).  
+You can modify reservation usage "warning" and "critical" thresholds within the GET parameters of the URL (just add &warning=90&critical=80 for example).  
   
 Default values are 99 and 98 percent.  
   

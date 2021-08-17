@@ -14,10 +14,11 @@ Coupled with a common monitoring system (nagios, centreon, zabbix, or whatever y
 </br>
 
 ## Requirements
-An "app registration" account (client id, valid secret and tenant id).  
-Reader RBAC role for this account on all reservation orders you want to monitor.  
+* An "app registration" account (client id, valid secret and tenant id).  
+* Reader RBAC role for this account on all reservation orders you want to monitor.  
 You can find powershell cmdlets in 'set-permissions-example' folder ; reservation orders owner can execute them in a simple Azure cloudshell.  
 Basically, that would be something like:  
+</br>
 
     $orders = Get-AzureRmReservationOrder  
     $appPrincipal = Get-AzADServicePrincipal -DisplayName "my-app-account-name"  
@@ -28,45 +29,47 @@ Basically, that would be something like:
 
 ## Installation
 Once you have all the requirements, you can deploy the Azure function with de "Deploy" button below:  
+  
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmatoy%2FAzureReservedInstanceUsageCheck%2Fmain%2Farm-template%2FAzureReservedInstanceUsageCheck.json)
   
-This will deploy an Azure app function with its storage account and app insights objects and a 'consumption' app plan.  
+</br>
+This will deploy an Azure app function with its storage account, app insights and 'consumption' app plan.  
 A keyvault will also be deployed to securely store the secret of your app principal.  
   
 ![alt text](https://github.com/matoy/AzureReservedInstanceUsageCheck/blob/main/img/screenshot1.png?raw=true)  
   
 Choose you Azure subscription, region and create or select a resource group.  
   
-App Name:  
+* App Name:  
 You can customize a name for resources that will be created.  
   
-Tenant ID:  
+* Tenant ID:  
 If your subscription depends on the same tenant than the account used to retrieve Reservations information, then you can use the default value.  
 Otherwise, enter the tenant ID of the account.  
   
-Reservation Orders Reader Application ID:  
+* Reservation Orders Reader Application ID:  
 Client ID of the account used to retrieve reservations information.  
   
-Reservation Orders Reader Secret:  
+* Reservation Orders Reader Secret:  
 Secret of the account used to retrieve reservations information.  
   
-Zip Release URL:  
+* Zip Release URL:  
 For testing, you can leave it like it.  
 For more serious use, I would advise you host your own zip file so that you wouldn't be subject to release changes done in this repository.  
   
-Max Concurrent Jobs:  
+* Max Concurrent Jobs:  
 An API call to Azure will be made for each reservation order.  
 If you have many reservation orders, you might get an http timeout when calling the function from your monitoring system.  
 This value allows to make <value> calls to Azure API in parallel.  
 With the default value, it will take around 40 seconds for ~100 reservations.  
   
-Signature:  
+* Signature:  
 When this function will be called by your monitoring system, you likely might forget about it.  
 The signature output will act a reminder since you'll get it in the results to your monitoring system.  
   
 When deployment is done, you can get your Azure function's URL in the output variables.  
 Trigger it manually in your favorite browser and eventually look at the logs in the function.  
-After you execute it for the first time, it might need 5-10 of minutes before it works because the function has to install Az module. Re-execute it again if necessary.  
+After you execute the function for the first time, it might need 5-10 minutes before it works because it has to install Az module. Re-execute it again if necessary and be patient, it will work.  
 </br>
 </br>
 
@@ -75,11 +78,13 @@ From there, you just have to call your function's URL from your monitoring syste
   
 You can find a script example in 'monitoring-script-example' folder which makes a GET request, outputs the result, looks for "CRITICAL" or "WARNING" in the text and use the right exit code accordingly.  
   
-Calling the function once a day should be enough since information given by the Azure API are on a daily basis.  
+Calling the function once a day should be enough since data provided by the Azure API is usage rate on a daily basis.  
   
-You can modify reservation usage 'warning' and 'critical' thresholds within the GET paramaters of the URL (just add &warning=90&critical=80 for example).  
+You can modify reservation usage 'warning' and 'critical' thresholds within the GET parameters of the URL (just add &warning=90&critical=80 for example).  
   
-Default values are 99 and 98.  
+Default values are 99 and 98 percent.  
+  
+Be sure to have an appropriate timeout (60s or more) because if you have many reservations, the function will need some time to execute.  
   
 This is an example of what you'd get in Centreon:  
 ![alt text](https://github.com/matoy/AzureReservedInstanceUsageCheck/blob/main/img/screenshot2.png?raw=true)  

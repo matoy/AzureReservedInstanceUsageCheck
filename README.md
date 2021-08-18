@@ -67,6 +67,7 @@ With the default value, it will take around 40 seconds for ~100 reservations.
 When this function will be called by your monitoring system, you likely might forget about it.  
 The signature output will act a reminder since you'll get it in the results to your monitoring system.  
   
+</br>
 When deployment is done, you can get your Azure function's URL in the output variables.  
   
 Trigger it manually in your favorite browser and eventually look at the logs in the function.  

@@ -105,6 +105,7 @@ while ($Jobs.Runspace.IsCompleted -contains $false) {
 }
 foreach ($job in $jobs) {
 	$consumptions += $job.PowerShell.EndInvoke($job.Runspace)
+	$job.PowerShell.Dispose()
 }
 
 # browse reservations and cook output results

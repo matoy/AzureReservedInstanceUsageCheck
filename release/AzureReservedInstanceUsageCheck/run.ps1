@@ -45,12 +45,14 @@ $out = ""
 $warningCount = 0
 $criticalCount = 0
 $usageDate = (get-date).adddays(-1).ToString("yyyy-MM-dd")
-$TenantId = $env:TenantId
+$signature = $env:Signature
+$maxRunspaces = [int] $env:MaxConcurrentJobs
+$tenantId = $env:TenantId
 $applicationId = $env:ReservationOrdersReaderApplicationID
 $password = $env:ReservationOrdersReaderSecret
 $securePassword = ConvertTo-SecureString -String $password -AsPlainText -Force
-$Credential = new-object -typename System.Management.Automation.PSCredential -argumentlist $applicationId, $securePassword
-Connect-AzAccount -Credential $Credential -Tenant $TenantId -ServicePrincipal
+$credential = new-object -typename System.Management.Automation.PSCredential -argumentlist $applicationId, $securePassword
+Connect-AzAccount -Credential $credential -Tenant $tenantId -ServicePrincipal
 
 # get token
 $azContext = Get-AzContext
@@ -59,18 +61,18 @@ $profileClient = New-Object -TypeName Microsoft.Azure.Commands.ResourceManager.C
 $token = $profileClient.AcquireAccessToken($azContext.Subscription.TenantId)
 
 # create http headers
-$Headers = @{}
-$Headers.Add("Authorization", "bearer " + "$($Token.Accesstoken)")
-$Headers.Add("contenttype", "application/json")
+$headers = @{}
+$headers.Add("Authorization", "bearer " + "$($Token.Accesstoken)")
+$headers.Add("contenttype", "application/json")
 
 # get reservationOrders inventory (read permission required!) from Azure API
 # and filtering on "succeeded" state
 $uri = "https://management.azure.com/providers/Microsoft.Capacity/reservationOrders?api-version=2019-04-01"
-$reservationOrders = Invoke-RestMethod -Method Get -Uri $uri -Headers $Headers
+$reservationOrders = Invoke-RestMethod -Method Get -Uri $uri -Headers $headers
 $reservationOrdersSucceeded = $reservationOrders.value.properties | where {$_.provisioningState -eq "Succeeded"}
 while ($reservationOrders.nextLink) {
 	$uri = $reservationOrders.nextLink
-	$reservationOrders = Invoke-RestMethod -Method Get -Uri $uri -Headers $Headers
+	$reservationOrders = Invoke-RestMethod -Method Get -Uri $uri -Headers $headers
 	$reservationOrdersSucceeded += $reservationOrders.value.properties | where {$_.provisioningState -eq "Succeeded"}
 }
 
@@ -78,8 +80,7 @@ while ($reservationOrders.nextLink) {
 # too long execution of the function would cause an http timeout from the
 # monitoring system calling the function
 # multithreading is required to avoid long execution time if many reservations
-$MaxRunspaces = [int] $env:MaxConcurrentJobs
-$RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxRunspaces)
+$RunspacePool = [runspacefactory]::CreateRunspacePool(1, $maxRunspaces)
 $RunspacePool.Open()
 $Jobs = New-Object System.Collections.ArrayList
 foreach ($reservationOrder in $reservationOrdersSucceeded) {
@@ -88,9 +89,9 @@ foreach ($reservationOrder in $reservationOrdersSucceeded) {
     $PowerShell = [powershell]::Create()
 	$PowerShell.RunspacePool = $RunspacePool
 	[void]$PowerShell.AddScript({
-	    Param ($uri, $Headers)
-		(Invoke-RestMethod -Method Get -Uri $uri -Headers $Headers).value
-	}).AddArgument($uri).AddArgument($Headers)
+	    Param ($uri, $headers)
+		(Invoke-RestMethod -Method Get -Uri $uri -Headers $headers).value
+	}).AddArgument($uri).AddArgument($headers)
 	
 	$JobObj = New-Object -TypeName PSObject -Property @{
 		Runspace = $PowerShell.BeginInvoke()
@@ -129,10 +130,9 @@ foreach ($consumption in $consumptions) {
 
 # add ending status and signature to results
 Write-Host $out
-$signature = $env:Signature
 $body = $out + "`n$signature`n"
 if ($criticalCount -ne 0) {
-    $body = "Status CRITICAL - Usage alert on $criticalCount reserved instance(s)`n" + $body
+    $body = "Status CRITICAL - Usage alert on $($criticalCount+$warningCount) reserved instance(s)`n" + $body
 }
 elseif ($warningCount -ne 0) {
     $body = "Status WARNING - Usage alert on $warningCount reserved instance(s)`n" + $body

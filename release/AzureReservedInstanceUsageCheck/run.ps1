@@ -132,10 +132,10 @@ foreach ($consumption in $consumptions) {
 Write-Host $out
 $body = $out + "`n$signature`n"
 if ($criticalCount -ne 0) {
-    $body = "Status CRITICAL - Usage alert on $($criticalCount+$warningCount) reserved instance(s)`n" + $body
+    $body = "Status CRITICAL - Usage alert on $($criticalCount+$warningCount)/$($reservationOrdersSucceeded.count) reserved instance(s)`n" + $body
 }
 elseif ($warningCount -ne 0) {
-    $body = "Status WARNING - Usage alert on $warningCount reserved instance(s)`n" + $body
+    $body = "Status WARNING - Usage alert on $warningCount/$($reservationOrdersSucceeded.count) reserved instance(s)`n" + $body
 }
 else {
     $body = "Status OK - No usage alert on any $($reservationOrdersSucceeded.count) reserved instance(s)`n" + $body

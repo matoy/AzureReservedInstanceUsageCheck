@@ -103,5 +103,5 @@ This is an example of what you'd get in Centreon:
 ## How to stop relying on this repository's zip  
 To make your function to stop relying on this repo's zip and become independant, follow these steps:  
 * remove zipReleaseURL app setting and restart app  
-* in "App files" section, edit "requirements.psd1" and uncomment the line: 'Az' = '6.*'  
+* in "App files" section, edit "requirements.psd1" and uncomment the line: 'Az' = '7.*'  
 * in "Functions" section, add a new function called "AzureReservedInstanceUsageCheck" and paste in it the content of the file release/AzureReservedInstanceUsageCheck/run.ps1 in this repository  
